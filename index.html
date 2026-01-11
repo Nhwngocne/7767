@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chronicles of Class & Nation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0d0d0d;
+            --text-color: #00ff41; /* Xanh Hacker */
+            --accent-red: #ff0055;
+            --accent-blue: #00ccff;
+            --border-style: 4px solid #00ff41;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Press Start 2P', cursive;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            line-height: 1.5;
+        }
+
+        /* Khung màn hình Game */
+        #game-container {
+            width: 800px;
+            height: 600px;
+            border: var(--border-style);
+            padding: 20px;
+            position: relative;
+            background: radial-gradient(circle, #1a1a1a 0%, #000000 100%);
+            box-shadow: 0 0 20px var(--text-color);
+        }
+
+        /* Các màn hình (Screen) */
+        .screen {
+            display: none; /* Ẩn mặc định */
+            height: 100%;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .active {
+            display: flex; /* Hiện khi được kích hoạt */
+        }
+
+        /* Typography */
+        h1 {
+            color: var(--accent-blue);
+            text-shadow: 2px 2px var(--accent-red);
+            font-size: 24px;
+            margin-bottom: 30px;
+        }
+
+        p {
+            font-size: 14px;
+            margin-bottom: 20px;
+            max-width: 80%;
+        }
+
+        .highlight {
+            color: yellow;
+        }
+
+        /* Nút bấm */
+        .btn {
+            background: transparent;
+            border: 2px solid var(--text-color);
+            color: var(--text-color);
+            padding: 15px 30px;
+            font-family: 'Press Start 2P', cursive;
+            cursor: pointer;
+            margin: 10px;
+            font-size: 12px;
+            transition: all 0.2s;
+            text-transform: uppercase;
+        }
+
+        .btn:hover {
+            background: var(--text-color);
+            color: black;
+            box-shadow: 0 0 10px var(--text-color);
+        }
+
+        .btn-red {
+            border-color: var(--accent-red);
+            color: var(--accent-red);
+        }
+        .btn-red:hover {
+            background: var(--accent-red);
+            color: white;
+            box-shadow: 0 0 10px var(--accent-red);
+        }
+
+        /* Hình ảnh minh họa (Dùng Emoji làm mockup) */
+        .avatar {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: float 2s infinite ease-in-out;
+        }
+
+        /* AI Disclosure Button */
+        #ai-badge {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 10px;
+            color: gray;
+            cursor: pointer;
+            border: 1px solid gray;
+            padding: 5px;
+        }
+
+        /* Animations */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Modal AI */
+        #ai-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #222;
+            border: 2px solid white;
+            padding: 20px;
+            width: 300px;
+            z-index: 100;
+            font-size: 10px;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="game-container">
+        
+        <div id="screen-intro" class="screen active">
+            <div class="avatar">🌏</div>
+            <h1>CHRONICLES OF CLASS & NATION</h1>
+            <p>Năm 2050. Xã hội phân cực. <br>Bạn sinh ra ở đâu trong thế giới này?</p>
+            <div>
+                <button class="btn btn-red" onclick="chooseChar('capitalist')">Option A: Tư Sản 🕴️</button>
+                <button class="btn" onclick="chooseChar('proletariat')">Option B: Vô Sản 👷</button>
+            </div>
+        </div>
+
+        <div id="screen-story" class="screen">
+            <div id="story-img" class="avatar"></div>
+            <h2 id="story-title"></h2>
+            <p id="story-text"></p>
+            <div id="story-choices">
+                </div>
+        </div>
+
+        <div id="screen-boss" class="screen">
+            <div class="avatar">👹</div>
+            <h1 style="color: var(--accent-red)">BOSS FIGHT: XÂM LĂNG</h1>
+            <p>Kẻ thù ngoại bang đang tấn công biên giới!<br>Nhà máy bị phá, công nhân bị bắt.</p>
+            <p class="highlight">Giai cấp hay Dân tộc quan trọng hơn lúc này?</p>
+            
+            <button class="btn btn-red" onclick="bossResult('class')">⚔️ Chỉ lo cho Giai Cấp</button>
+            <button class="btn btn-red" onclick="bossResult('nation')">🛡️ Chỉ lo cho Dân Tộc</button>
+            <button class="btn" onclick="bossResult('dialectic')">💎 Quan hệ BIỆN CHỨNG</button>
+        </div>
+
+        <div id="screen-result" class="screen">
+            <div id="result-icon" class="avatar"></div>
+            <h2 id="result-title"></h2>
+            <p id="result-text"></p>
+            <button class="btn" onclick="location.reload()">Chơi lại</button>
+        </div>
+
+        <div id="ai-badge" onclick="toggleAI()">🤖 AI Usage Info</div>
+        <div id="ai-modal">
+            <h3>AI DISCLOSURE</h3>
+            <p>- Code: Hỗ trợ bởi Gemini AI.</p>
+            <p>- Nội dung: Giáo trình Triết học Mác - Lênin.</p>
+            <p>- Hình ảnh: Ý tưởng Pixel Art.</p>
+            <button class="btn" onclick="toggleAI()">Đóng</button>
+        </div>
+
+    </div>
+
+    <script>
+        // DỮ LIỆU CỐT TRUYỆN
+        const storyData = {
+            capitalist: {
+                icon: "🕴️",
+                title: "Giai cấp TƯ SẢN",
+                text: "Bạn sở hữu 10 nhà máy Robot. Bạn nắm trong tay 'Tư liệu sản xuất'. Nhưng công nhân đang đình công vì lương thấp.",
+                btnText: "Đuổi việc hết!",
+                nextScreen: "conflict"
+            },
+            proletariat: {
+                icon: "👷",
+                title: "Giai cấp VÔ SẢN",
+                text: "Bạn làm việc 14 tiếng/ngày nhưng không đủ sống. Bạn không có tư liệu sản xuất, chỉ có sức lao động.",
+                btnText: "Đấu tranh đòi quyền lợi!",
+                nextScreen: "conflict"
+            },
+            conflict: {
+                icon: "⚡",
+                title: "MÂU THUẪN",
+                text: "Dù bạn là ai, mâu thuẫn giai cấp là không thể tránh khỏi. Lênin nói: 'Đấu tranh giai cấp là động lực phát triển'.",
+                btnText: "Tiếp tục hành trình",
+                nextScreen: "boss"
+            }
+        };
+
+        // HÀM CHUYỂN MÀN HÌNH
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        // CHỌN NHÂN VẬT
+        function chooseChar(role) {
+            const data = storyData[role];
+            updateStoryView(data, 'conflict'); // Chuyển đến mâu thuẫn sau bước này
+        }
+
+        // CẬP NHẬT GIAO DIỆN CỐT TRUYỆN
+        function updateStoryView(data, nextStepKey) {
+            showScreen('screen-story');
+            document.getElementById('story-img').innerText = data.icon;
+            document.getElementById('story-title').innerText = data.title;
+            document.getElementById('story-text').innerText = data.text;
+            
+            const choiceDiv = document.getElementById('story-choices');
+            choiceDiv.innerHTML = `<button class="btn" onclick="nextStory('${nextStepKey}')">${data.btnText}</button>`;
+        }
+
+        function nextStory(key) {
+            if (key === 'conflict') {
+                updateStoryView(storyData['conflict'], 'boss');
+            } else if (key === 'boss') {
+                showScreen('screen-boss');
+            }
+        }
+
+        // XỬ LÝ BOSS FIGHT
+        function bossResult(answer) {
+            showScreen('screen-result');
+            const title = document.getElementById('result-title');
+            const text = document.getElementById('result-text');
+            const icon = document.getElementById('result-icon');
+
+            if (answer === 'dialectic') {
+                icon.innerText = "🏆";
+                title.innerText = "CHIẾN THẮNG!";
+                title.style.color = "#00ff41";
+                text.innerText = "Chính xác! Giai cấp và Dân tộc có quan hệ biện chứng. Giai cấp quyết định tính chất dân tộc, nhưng dân tộc là địa bàn đấu tranh của giai cấp. Bạn đã bảo vệ được cả hai!";
+            } else {
+                icon.innerText = "💀";
+                title.innerText = "GAME OVER";
+                title.style.color = "red";
+                text.innerText = "Sai rồi! Nếu chỉ quan tâm một phía, bạn sẽ mất nước hoặc bị cô lập. Hãy nhớ: Lợi ích giai cấp chân chính thống nhất với lợi ích dân tộc.";
+            }
+        }
+
+        // TOGGLE AI MODAL
+        function toggleAI() {
+            const modal = document.getElementById('ai-modal');
+            modal.style.display = modal.style.display === 'block' ? 'none' : 'block';
+        }
+    </script>
+</body>
+</html>
