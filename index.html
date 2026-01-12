@@ -3,285 +3,406 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chronicles of Class & Nation</title>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <title>The Museum of Class & Nation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #0d0d0d;
-            --text-color: #00ff41; /* Xanh Hacker */
-            --accent-red: #ff0055;
-            --accent-blue: #00ccff;
-            --border-style: 4px solid #00ff41;
+            --gold: #d4af37;
+            --dark-bg: #050505;
+            --panel-bg: rgba(20, 20, 20, 0.85);
+            --text-color: #e0e0e0;
         }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: 'Press Start 2P', cursive;
+        body, html {
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            overflow: hidden;
-            line-height: 1.5;
-        }
-
-        /* Khung màn hình Game */
-        #game-container {
-            width: 800px;
-            height: 600px;
-            border: var(--border-style);
-            padding: 20px;
-            position: relative;
-            background: radial-gradient(circle, #1a1a1a 0%, #000000 100%);
-            box-shadow: 0 0 20px var(--text-color);
-        }
-
-        /* Các màn hình (Screen) */
-        .screen {
-            display: none; /* Ẩn mặc định */
-            height: 100%;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            animation: fadeIn 0.5s ease-in-out;
-        }
-
-        .active {
-            display: flex; /* Hiện khi được kích hoạt */
-        }
-
-        /* Typography */
-        h1 {
-            color: var(--accent-blue);
-            text-shadow: 2px 2px var(--accent-red);
-            font-size: 24px;
-            margin-bottom: 30px;
-        }
-
-        p {
-            font-size: 14px;
-            margin-bottom: 20px;
-            max-width: 80%;
-        }
-
-        .highlight {
-            color: yellow;
-        }
-
-        /* Nút bấm */
-        .btn {
-            background: transparent;
-            border: 2px solid var(--text-color);
+            font-family: 'Lato', sans-serif;
+            background-color: var(--dark-bg);
             color: var(--text-color);
-            padding: 15px 30px;
-            font-family: 'Press Start 2P', cursive;
-            cursor: pointer;
-            margin: 10px;
-            font-size: 12px;
-            transition: all 0.2s;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Cinzel', serif;
             text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--gold);
         }
 
-        .btn:hover {
-            background: var(--text-color);
-            color: black;
-            box-shadow: 0 0 10px var(--text-color);
+        /* --- PARALLAX SECTION SETUP --- */
+        .parallax-section {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            overflow: hidden;
         }
 
-        .btn-red {
-            border-color: var(--accent-red);
-            color: var(--accent-red);
-        }
-        .btn-red:hover {
-            background: var(--accent-red);
-            color: white;
-            box-shadow: 0 0 10px var(--accent-red);
-        }
-
-        /* Hình ảnh minh họa (Dùng Emoji làm mockup) */
-        .avatar {
-            font-size: 80px;
-            margin-bottom: 20px;
-            animation: float 2s infinite ease-in-out;
-        }
-
-        /* AI Disclosure Button */
-        #ai-badge {
+        /* Lớp phủ đen mờ để chữ dễ đọc */
+        .overlay {
             position: absolute;
-            bottom: 10px;
-            right: 10px;
-            font-size: 10px;
-            color: gray;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1;
+        }
+
+        .content-container {
+            position: relative;
+            z-index: 2;
+            width: 80%;
+            max-width: 1000px;
+            text-align: center;
+        }
+
+        /* --- 1. INTRO: CÁNH CỔNG THỜI GIAN --- */
+        #intro {
+            background-image: url('https://images.unsplash.com/photo-1461360370896-922624d12aa1?q=80&w=2074&auto=format&fit=crop'); 
+        }
+
+        .intro-title {
+            font-size: 4rem;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .scroll-btn {
+            margin-top: 30px;
+            padding: 15px 40px;
+            border: 2px solid var(--gold);
+            color: var(--gold);
+            background: transparent;
+            font-family: 'Cinzel', serif;
+            font-size: 1.2rem;
             cursor: pointer;
-            border: 1px solid gray;
-            padding: 5px;
+            transition: 0.3s;
+        }
+        .scroll-btn:hover { background: var(--gold); color: black; box-shadow: 0 0 30px var(--gold); }
+
+        /* --- 2. GIAI CẤP (TIMELINE) --- */
+        #class-gallery {
+            background-color: #111;
+            padding: 100px 0;
+        }
+        
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
         }
 
-        /* Animations */
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        /* Đường kẻ dọc */
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 2px;
+            background-color: var(--gold);
+            top: 0; bottom: 0; left: 50%;
+            margin-left: -1px;
         }
 
-        /* Modal AI */
-        #ai-modal {
+        .epoch {
+            padding: 20px 40px;
+            position: relative;
+            width: 50%;
+            box-sizing: border-box;
+            opacity: 0; /* Ẩn để chờ hiệu ứng scroll */
+            transform: translateY(50px);
+            transition: all 1s ease;
+        }
+
+        .epoch.show { opacity: 1; transform: translateY(0); }
+        .left { left: 0; text-align: right; }
+        .right { left: 50%; text-align: left; }
+
+        .epoch-content {
+            padding: 20px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 4px;
+            position: relative;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        /* Hiệu ứng Hover đặc biệt */
+        .epoch-content:hover {
+            border-color: var(--gold);
+            transform: scale(1.05);
+            background: #222;
+        }
+
+        .epoch-content:hover .hidden-info {
+            max-height: 200px; /* Mở rộng thông tin */
+            opacity: 1;
+            margin-top: 15px;
+        }
+
+        .hidden-info {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: 0.5s ease;
+            color: #aaa;
+            font-size: 0.9rem;
+            border-top: 1px dashed #444;
+            padding-top: 0;
+        }
+
+        /* --- 3. DÂN TỘC (MAP & CARD) --- */
+        #nation-gallery {
+            background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop');
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .feature-card {
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid var(--gold);
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .feature-card:hover {
+            background: rgba(212, 175, 55, 0.2);
+            transform: translateY(-10px);
+        }
+
+        .icon { font-size: 40px; margin-bottom: 10px; display: block; }
+
+        /* MODAL (Hộp thông tin khi click) */
+        .modal {
             display: none;
             position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: #222;
-            border: 2px solid white;
-            padding: 20px;
-            width: 300px;
             z-index: 100;
-            font-size: 10px;
-            color: white;
+            left: 0; top: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            justify-content: center;
+            align-items: center;
         }
+        .modal-content {
+            background: #111;
+            border: 2px solid var(--gold);
+            padding: 40px;
+            max-width: 600px;
+            text-align: center;
+            position: relative;
+            animation: zoomIn 0.3s;
+        }
+        .close {
+            position: absolute; top: 10px; right: 20px;
+            color: var(--gold); font-size: 30px; cursor: pointer;
+        }
+
+        /* --- 4. PHÒNG CHIẾU PHIM (VN) --- */
+        #cinema {
+            background-color: #0a0a0a;
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .video-wrapper {
+            width: 80%;
+            max-width: 900px;
+            margin: 40px auto;
+            border: 5px solid #222;
+            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+            aspect-ratio: 16/9;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #555;
+        }
+
+        /* --- ANIMATIONS --- */
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes zoomIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
     </style>
 </head>
 <body>
 
-    <div id="game-container">
-        
-        <div id="screen-intro" class="screen active">
-            <div class="avatar">🌏</div>
-            <h1>CHRONICLES OF CLASS & NATION</h1>
-            <p>Năm 2050. Xã hội phân cực. <br>Bạn sinh ra ở đâu trong thế giới này?</p>
-            <div>
-                <button class="btn btn-red" onclick="chooseChar('capitalist')">Option A: Tư Sản 🕴️</button>
-                <button class="btn" onclick="chooseChar('proletariat')">Option B: Vô Sản 👷</button>
+    <section id="intro" class="parallax-section">
+        <div class="overlay"></div>
+        <div class="content-container">
+            <h1 class="intro-title">HÀNH TRÌNH ĐI TÌM CĂN CƯỚC</h1>
+            <p style="font-size: 1.5rem; color: #ccc;">"Bạn là ai trong dòng chảy lịch sử nhân loại?"</p>
+            <button class="scroll-btn" onclick="scrollToSection('class-gallery')">BƯỚC VÀO BẢO TÀNG</button>
+        </div>
+    </section>
+
+    <section id="class-gallery">
+        <div class="content-container">
+            <h2>PHÒNG TRƯNG BÀY: SỰ HÌNH THÀNH GIAI CẤP</h2>
+            <p>Di chuột vào từng thời kỳ để xem bản chất bóc lột</p>
+            <br><br>
+
+            <div class="timeline">
+                <div class="epoch left">
+                    <div class="epoch-content">
+                        <h3>1. Công xã Nguyên thủy</h3>
+                        <p>Chưa có giai cấp.</p>
+                        <div class="hidden-info">
+                            Tư liệu sản xuất là của chung. Năng suất thấp, không có "của dư" để chiếm đoạt. Mọi người bình đẳng.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="epoch right">
+                    <div class="epoch-content">
+                        <h3>2. Chiếm hữu Nô lệ</h3>
+                        <p>Chủ nô - Nô lệ.</p>
+                        <div class="hidden-info">
+                            <strong>Nguồn gốc trực tiếp:</strong> Chế độ tư hữu xuất hiện. Nô lệ bị coi là "công cụ biết nói", bị chiếm đoạt toàn bộ sức lao động.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="epoch left">
+                    <div class="epoch-content">
+                        <h3>3. Phong kiến</h3>
+                        <p>Địa chủ - Nông dân.</p>
+                        <div class="hidden-info">
+                            Bóc lột thông qua địa tô. Nông dân được sở hữu một phần công cụ nhưng lệ thuộc vào ruộng đất của địa chủ.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="epoch right">
+                    <div class="epoch-content">
+                        <h3>4. Tư bản Chủ nghĩa</h3>
+                        <p>Tư sản - Vô sản.</p>
+                        <div class="hidden-info">
+                            <strong>Định nghĩa Lênin:</strong> Tập đoàn này chiếm đoạt lao động của tập đoàn khác nhờ nắm tư liệu sản xuất. Bóc lột Giá trị thặng dư.
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+    </section>
 
-        <div id="screen-story" class="screen">
-            <div id="story-img" class="avatar"></div>
-            <h2 id="story-title"></h2>
-            <p id="story-text"></p>
-            <div id="story-choices">
+    <section id="nation-gallery" class="parallax-section">
+        <div class="overlay"></div>
+        <div class="content-container">
+            <h2>HỒN DÂN TỘC</h2>
+            <p>Bấm vào các biểu tượng để khám phá 4 đặc trưng cơ bản của Dân tộc</p>
+
+            <div class="feature-grid">
+                <div class="feature-card" onclick="openModal('modal1')">
+                    <span class="icon">🗺️</span>
+                    <h3>LÃNH THỔ</h3>
+                    <p>Địa bàn sinh tồn thiêng liêng.</p>
                 </div>
+                <div class="feature-card" onclick="openModal('modal2')">
+                    <span class="icon">💰</span>
+                    <h3>KINH TẾ</h3>
+                    <p>Đặc trưng quan trọng nhất.</p>
+                </div>
+                <div class="feature-card" onclick="openModal('modal3')">
+                    <span class="icon">🗣️</span>
+                    <h3>NGÔN NGỮ</h3>
+                    <p>Công cụ giao tiếp thống nhất.</p>
+                </div>
+                <div class="feature-card" onclick="openModal('modal4')">
+                    <span class="icon">🧠</span>
+                    <h3>TÂM LÝ - VĂN HÓA</h3>
+                    <p>Bản sắc, "Quốc hồn quốc túy".</p>
+                </div>
+            </div>
         </div>
+    </section>
 
-        <div id="screen-boss" class="screen">
-            <div class="avatar">👹</div>
-            <h1 style="color: var(--accent-red)">BOSS FIGHT: XÂM LĂNG</h1>
-            <p>Kẻ thù ngoại bang đang tấn công biên giới!<br>Nhà máy bị phá, công nhân bị bắt.</p>
-            <p class="highlight">Giai cấp hay Dân tộc quan trọng hơn lúc này?</p>
+    <section id="cinema">
+        <div class="content-container">
+            <h2>CASE STUDY: VIỆT NAM</h2>
+            <p style="color: #ccc;">"Độc lập dân tộc gắn liền với Chủ nghĩa xã hội"</p>
             
-            <button class="btn btn-red" onclick="bossResult('class')">⚔️ Chỉ lo cho Giai Cấp</button>
-            <button class="btn btn-red" onclick="bossResult('nation')">🛡️ Chỉ lo cho Dân Tộc</button>
-            <button class="btn" onclick="bossResult('dialectic')">💎 Quan hệ BIỆN CHỨNG</button>
-        </div>
+            <div class="video-wrapper">
+                <div>
+                    <h3>[VIDEO PHÓNG SỰ CỦA NHÓM]</h3>
+                    <p>Hãy chèn link video Youtube vào code (Dòng 255)</p>
+                </div>
+            </div>
 
-        <div id="screen-result" class="screen">
-            <div id="result-icon" class="avatar"></div>
-            <h2 id="result-title"></h2>
-            <p id="result-text"></p>
-            <button class="btn" onclick="location.reload()">Chơi lại</button>
+            <div style="text-align: justify; max-width: 800px; margin: 0 auto; color: #aaa;">
+                <p><strong>Thực tiễn:</strong> Ở Việt Nam, đấu tranh giai cấp không phải là đối kháng vũ trang mà là đấu tranh chống nghèo nàn, lạc hậu. Lợi ích giai cấp công nhân thống nhất với lợi ích dân tộc. Đại đoàn kết là sức mạnh vô địch.</p>
+            </div>
         </div>
+    </section>
 
-        <div id="ai-badge" onclick="toggleAI()">🤖 AI Usage Info</div>
-        <div id="ai-modal">
-            <h3>AI DISCLOSURE</h3>
-            <p>- Code: Hỗ trợ bởi Gemini AI.</p>
-            <p>- Nội dung: Giáo trình Triết học Mác - Lênin.</p>
-            <p>- Hình ảnh: Ý tưởng Pixel Art.</p>
-            <button class="btn" onclick="toggleAI()">Đóng</button>
+    <div id="modal1" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal1')">&times;</span>
+            <h2>CỘNG ĐỒNG VỀ LÃNH THỔ</h2>
+            <p>Lãnh thổ là chủ quyền của một quốc gia, là nơi sinh tồn và phát triển của dân tộc đó. Vận mệnh dân tộc gắn liền với sự toàn vẹn lãnh thổ.</p>
         </div>
-
+    </div>
+    <div id="modal2" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal2')">&times;</span>
+            <h2>CỘNG ĐỒNG VỀ KINH TẾ</h2>
+            <p><strong>(Quan trọng nhất)</strong></p>
+            <p>Các mối quan hệ kinh tế thường xuyên và bền vững gắn kết các bộ phận dân cư lại thành một khối thống nhất, xóa bỏ sự biệt lập, cát cứ của các vùng miền (khác với thời phong kiến).</p>
+        </div>
+    </div>
+    <div id="modal3" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal3')">&times;</span>
+            <h2>CỘNG ĐỒNG VỀ NGÔN NGỮ</h2>
+            <p>Mỗi dân tộc có một ngôn ngữ chung thống nhất (tiếng mẹ đẻ) làm công cụ giao tiếp chủ yếu trong cộng đồng.</p>
+        </div>
+    </div>
+    <div id="modal4" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal4')">&times;</span>
+            <h2>CỘNG ĐỒNG VỀ VĂN HÓA</h2>
+            <p>Tạo nên tính cách và bản sắc văn hóa của dân tộc. Nó biểu hiện qua phong tục, tập quán, tín ngưỡng và lối sống, tạo nên sức sống mãnh liệt của dân tộc.</p>
+        </div>
     </div>
 
     <script>
-        // DỮ LIỆU CỐT TRUYỆN
-        const storyData = {
-            capitalist: {
-                icon: "🕴️",
-                title: "Giai cấp TƯ SẢN",
-                text: "Bạn sở hữu 10 nhà máy Robot. Bạn nắm trong tay 'Tư liệu sản xuất'. Nhưng công nhân đang đình công vì lương thấp.",
-                btnText: "Đuổi việc hết!",
-                nextScreen: "conflict"
-            },
-            proletariat: {
-                icon: "👷",
-                title: "Giai cấp VÔ SẢN",
-                text: "Bạn làm việc 14 tiếng/ngày nhưng không đủ sống. Bạn không có tư liệu sản xuất, chỉ có sức lao động.",
-                btnText: "Đấu tranh đòi quyền lợi!",
-                nextScreen: "conflict"
-            },
-            conflict: {
-                icon: "⚡",
-                title: "MÂU THUẪN",
-                text: "Dù bạn là ai, mâu thuẫn giai cấp là không thể tránh khỏi. Lênin nói: 'Đấu tranh giai cấp là động lực phát triển'.",
-                btnText: "Tiếp tục hành trình",
-                nextScreen: "boss"
-            }
-        };
-
-        // HÀM CHUYỂN MÀN HÌNH
-        function showScreen(screenId) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(screenId).classList.add('active');
+        // Scroll Smooth
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
         }
 
-        // CHỌN NHÂN VẬT
-        function chooseChar(role) {
-            const data = storyData[role];
-            updateStoryView(data, 'conflict'); // Chuyển đến mâu thuẫn sau bước này
+        // Modal Logic
+        function openModal(id) {
+            document.getElementById(id).style.display = 'flex';
         }
-
-        // CẬP NHẬT GIAO DIỆN CỐT TRUYỆN
-        function updateStoryView(data, nextStepKey) {
-            showScreen('screen-story');
-            document.getElementById('story-img').innerText = data.icon;
-            document.getElementById('story-title').innerText = data.title;
-            document.getElementById('story-text').innerText = data.text;
-            
-            const choiceDiv = document.getElementById('story-choices');
-            choiceDiv.innerHTML = `<button class="btn" onclick="nextStory('${nextStepKey}')">${data.btnText}</button>`;
+        function closeModal(id) {
+            document.getElementById(id).style.display = 'none';
         }
-
-        function nextStory(key) {
-            if (key === 'conflict') {
-                updateStoryView(storyData['conflict'], 'boss');
-            } else if (key === 'boss') {
-                showScreen('screen-boss');
+        // Đóng modal khi click ra ngoài
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = "none";
             }
         }
 
-        // XỬ LÝ BOSS FIGHT
-        function bossResult(answer) {
-            showScreen('screen-result');
-            const title = document.getElementById('result-title');
-            const text = document.getElementById('result-text');
-            const icon = document.getElementById('result-icon');
+        // Scroll Animation cho Timeline
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('show');
+                }
+            });
+        });
 
-            if (answer === 'dialectic') {
-                icon.innerText = "🏆";
-                title.innerText = "CHIẾN THẮNG!";
-                title.style.color = "#00ff41";
-                text.innerText = "Chính xác! Giai cấp và Dân tộc có quan hệ biện chứng. Giai cấp quyết định tính chất dân tộc, nhưng dân tộc là địa bàn đấu tranh của giai cấp. Bạn đã bảo vệ được cả hai!";
-            } else {
-                icon.innerText = "💀";
-                title.innerText = "GAME OVER";
-                title.style.color = "red";
-                text.innerText = "Sai rồi! Nếu chỉ quan tâm một phía, bạn sẽ mất nước hoặc bị cô lập. Hãy nhớ: Lợi ích giai cấp chân chính thống nhất với lợi ích dân tộc.";
-            }
-        }
-
-        // TOGGLE AI MODAL
-        function toggleAI() {
-            const modal = document.getElementById('ai-modal');
-            modal.style.display = modal.style.display === 'block' ? 'none' : 'block';
-        }
+        document.querySelectorAll('.epoch').forEach((el) => observer.observe(el));
     </script>
 </body>
 </html>
